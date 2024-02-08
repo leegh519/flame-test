@@ -9,7 +9,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
-      - uses: bluefireteam/flutter-gh-pages@v7
-			
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'master'
+      - run: flutter pub get
+      - run: flutter config --enable-web
+      - run: flutter build web --base-href "/flame-test/"
+      
+      - run: git config user.name leegh519
+      - run: git config user.email ghkstoo@naver.com
+      - run: git --work-tree build/web add --all
+      - run: git commit -m "Automatic deployment by github-actions"
+      - run: git push origin HEAD:gh_pages --force
